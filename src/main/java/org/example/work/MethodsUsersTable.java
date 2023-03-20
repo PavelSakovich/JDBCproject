@@ -4,17 +4,16 @@ import org.example.util.ConnectionManager;
 import org.example.model.User;
 
 import java.sql.*;
-import java.util.Scanner;
 import java.util.logging.Logger;
 import java.sql.Connection;
 
-public class MethodsTable {
+public class MethodsUsersTable {
 
-    private static Logger logger = Logger.getLogger("Main");
+    private static Logger logger = Logger.getLogger("MethodsUsersTable");
 
-    public static void creatTable() {
+    public  void creatTable() {
         String sql = """
-CREATE TABLE users( id SERIAL PRIMARY KEY, first_name VARCHAR (30), last_name VARCHAR (30), age INTEGER );
+CREATE TABLE users( id SERIAL PRIMARY KEY, first_name  VARCHAR (30) , last_name VARCHAR (30), age INTEGER );
 """; // SQL  код создания таблицы в базе данных.
         try(Connection connection = ConnectionManager.open(); // подключение к базе данных.
             PreparedStatement statement = connection.prepareStatement(sql)) // передача SQL запроса к базе данных (создание таблицы);
@@ -25,7 +24,7 @@ CREATE TABLE users( id SERIAL PRIMARY KEY, first_name VARCHAR (30), last_name VA
             throw new RuntimeException(e);
         }
     }
-    public static void deleteTables(){
+    public  void deleteTables(){
         try ( Connection connection = ConnectionManager.open();
               PreparedStatement preparedStatement = connection.prepareStatement(" DROP TABLE users")){
             preparedStatement.executeUpdate();
@@ -38,19 +37,17 @@ CREATE TABLE users( id SERIAL PRIMARY KEY, first_name VARCHAR (30), last_name VA
     public void addUsers (User user){
         try (Connection connection  = ConnectionManager.open();
 
-            PreparedStatement preparedStatement = connection.prepareStatement(" INSERT INTO users (id, first_name, last_name, age ) " +
-                                                                            "VALUES (?, ?, ?, ?)")){
-            preparedStatement.setInt(1, user.getId());
-            preparedStatement.setString(2, user.getFirst_name());
-            preparedStatement.setString(3, user.getLast_name());
-            preparedStatement.setInt(4, user.getAge());
+            PreparedStatement preparedStatement = connection.prepareStatement(" INSERT INTO users ( first_name, last_name, age ) " +
+                                                                            "VALUES (?, ?, ?)")){
+            preparedStatement.setString(1, user.getFirst_name());
+            preparedStatement.setString(2, user.getLast_name());
+            preparedStatement.setInt(3, user.getAge());
             preparedStatement.executeUpdate();
-            logger.info("------пользовател создан:" + user.toString());
+            logger.info("------пользователь создан:" + user.toString());
         } catch ( SQLException e){
             logger.info("------пользователь не создан--------");
      e.getStackTrace();
         }
-
     }
     public void deleteUsersToId(int id){
         try ( Connection connection = ConnectionManager.open();
@@ -77,7 +74,7 @@ CREATE TABLE users( id SERIAL PRIMARY KEY, first_name VARCHAR (30), last_name VA
                         "age = " + age + " years;");
             }
                 } catch(SQLException e){
-            logger.info("Ошибка вывода таблицы");
+            logger.info("Данные отсутствуют");
                     e.getStackTrace();
                 }
             }
@@ -106,12 +103,16 @@ CREATE TABLE users( id SERIAL PRIMARY KEY, first_name VARCHAR (30), last_name VA
         try ( Connection connection = ConnectionManager.open();
               PreparedStatement preparedStatement = connection.prepareStatement("UPDATE users SET first_name = ?, last_name = ?, age = ? WHERE id = ?"))
         {
-            new MethodsTable().outputUserToId(id);
+            new MethodsUsersTable().outputUserToId(id);
             preparedStatement.setString(1, first_name);
             preparedStatement.setString(2, last_name);
             preparedStatement.setInt(3, age);
             preparedStatement.setInt(4, id);
             preparedStatement.executeUpdate();
+            logger.info("Таблица обновлена:" + "\n" + "id = " + id + "\n"
+                    + "first_name = " + first_name + "\n"
+                    + "last_name = " + last_name + "\n"
+                    + "age = " + age);
         } catch (SQLException e){
             e.getStackTrace();
         }

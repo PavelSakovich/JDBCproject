@@ -1,24 +1,24 @@
 package org.example.model;
 
 public class User {
-    private int id;
+
     private String first_name;
     private String last_name;
     private int age;
 
-    public User(int id,  String first_name, String last_name, int age) {
-        this.id = id;
+    @Override
+    public String toString() {
+        return "User{" +
+                "first_name='" + first_name + '\'' +
+                ", last_name='" + last_name + '\'' +
+                ", age=" + age +
+                '}';
+    }
+
+    public User(String first_name, String last_name, int age) {
         this.first_name = first_name;
         this.last_name = last_name;
         this.age = age;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public String getFirst_name() {
@@ -45,13 +45,4 @@ public class User {
         this.age = age;
     }
 
-    @Override
-    public String toString() {
-        return "User{" +
-                "id=" + id +
-                ", first_name='" + first_name + '\'' +
-                ", last_name='" + last_name + '\'' +
-                ", age=" + age +
-                '}';
-    }
 }

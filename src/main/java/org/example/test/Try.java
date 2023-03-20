@@ -1,18 +1,15 @@
 package org.example.test;
 
-import org.example.work.MethodsTable;
+import org.example.model.User;
+import org.example.model.UsersAddress;
+import org.example.work.MethodsUserAddressTable;
+import org.example.work.MethodsUsersTable;
 
 
 public class Try {
     public static void main(String[] args) {
-        MethodsTable methodsTable = new MethodsTable ();
-//        User user5 = new User( 1, "Павел", "Сакович", 4);
-//        methodsTable.addUsers(user5);
-//        User user6 = new User( 2, "Саня", "Ротарь", 33);
-//        methodsTable.addUsers(user6);
-       // methodsTable.updateUsers("Павел");
-//          methodsTable.updateUsers(2, "Ротарь", "Александр", 1000400);//        MethodsTable main = new MethodsTable();
-           methodsTable.outputUserToId(2);
+    MethodsUserAddressTable methodsUserAddressTable = new MethodsUserAddressTable();
+    methodsUserAddressTable.selectUserHouse(26);
 
     }
 }
