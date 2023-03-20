@@ -13,10 +13,10 @@ public class MethodsUsersTable {
 
     public  void creatTable() {
         String sql = """
-CREATE TABLE users( id SERIAL PRIMARY KEY, first_name  VARCHAR (30) , last_name VARCHAR (30), age INTEGER );
-"""; // SQL  код создания таблицы в базе данных.
-        try(Connection connection = ConnectionManager.open(); // подключение к базе данных.
-            PreparedStatement statement = connection.prepareStatement(sql)) // передача SQL запроса к базе данных (создание таблицы);
+    CREATE TABLE users( id SERIAL PRIMARY KEY, first_name  VARCHAR (30) , last_name VARCHAR (30), age INTEGER );
+    """;
+        try(Connection connection = ConnectionManager.open();
+            PreparedStatement statement = connection.prepareStatement(sql))
         {
             statement.executeUpdate();
             logger.info ("---- таблица создана-----");
