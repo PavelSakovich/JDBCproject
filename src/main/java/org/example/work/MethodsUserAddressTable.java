@@ -6,69 +6,68 @@ import org.example.util.ConnectionManager;
 import org.example.work.MethodsUsersTable;
 
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.logging.Logger;
 
 public class MethodsUserAddressTable {
     private static Logger logger = Logger.getLogger("MethodsUserAddressTable");
 
-    public void creatUser_addressTable() {
+    public void createTableUsersAddress() {
         String sql = """
-    CREATE TABLE user_address (
-	    id int PRIMARY KEY REFERENCES users (id) ON DELETE CASCADE,
-	    city VARCHAR (20),
-	    street VARCHAR (20),
-	    house INT);
-	    """;
-        try(Connection connection = ConnectionManager.open();
-            PreparedStatement statement = connection.prepareStatement(sql))
-        {
+                CREATE TABLE user_address (
+                 id int PRIMARY KEY REFERENCES users (id) ON DELETE CASCADE,
+                 city VARCHAR (20),
+                 street VARCHAR (20),
+                 house INT);
+                 """;
+        try (Connection connection = ConnectionManager.open();
+             PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.executeUpdate();
-            logger.info ("---- таблица user_address создана-----");
-        } catch (SQLException e){
-            throw new RuntimeException(e);
-        }
-    }
-    public void deleteUsers_addressToId(int id){
-        try ( Connection connection = ConnectionManager.open();
-              PreparedStatement preparedStatement = connection.prepareStatement(" DELETE FROM users WHERE id = ?"))
-        {
-            preparedStatement.setInt(1, id);
-            preparedStatement.executeUpdate();
-        } catch (SQLException e){
+            logger.info("---- Таблица users_address создана-----");
+        } catch (SQLException e) {
+            logger.info("----Error----");
             e.getStackTrace();
         }
     }
-    public void addTableAddress(UsersAddress usersAddress){
-        try (Connection connection  = ConnectionManager.open();
 
-             PreparedStatement preparedStatement = connection.prepareStatement(" INSERT INTO user_address (id, city, street, house) " +
-                     "VALUES (?, ?, ?, ?)" ); ){
-            preparedStatement.setInt(1, usersAddress.getId());
-            preparedStatement.setString(2, usersAddress.getCity());
-            preparedStatement.setString(3, usersAddress.getStreet());
-            preparedStatement.setInt(4, usersAddress.getHouse());
+
+    public void addAddressToUser(UsersAddress userAddress) {
+        try (Connection connection = ConnectionManager.open();
+
+             PreparedStatement preparedStatement = connection.prepareStatement(" INSERT INTO user_address (id, city, street, house) " + "VALUES (?, ?, ?, ?)");) {
+            preparedStatement.setInt(1, userAddress.getId());
+            preparedStatement.setString(2, userAddress.getCity());
+            preparedStatement.setString(3, userAddress.getStreet());
+            preparedStatement.setInt(4, userAddress.getHouse());
             preparedStatement.executeUpdate();
-            logger.info("------адрес пользователя добавлен--------" );
-        } catch ( SQLException e){
-            logger.info("------адрес не добавлен--------");
-           e.getStackTrace();
+            logger.info("----Адрес добавлен----");
+        } catch (SQLException e) {
+            logger.info("----Error!----");
+            e.getStackTrace();
         }
     }
-    public void selectUserHouse (int numberHouse){
-        try (Connection connection  = ConnectionManager.open();
+
+    public ArrayList<User> getUsersByNumberHouse(int numberHouse) {
+        ArrayList<User> listUsers = new ArrayList<>();
+        try (Connection connection = ConnectionManager.open();
              PreparedStatement preparedStatement = connection.prepareStatement("SELECT users.id, users.first_name, users.last_name, users.age FROM user_address LEFT JOIN  users  ON user_address.id = users.id WHERE user_address.house = ?")
-             ){
-           preparedStatement.setInt(1, numberHouse);
+        ) {
+            preparedStatement.setInt(1, numberHouse);
             ResultSet resultSet = preparedStatement.executeQuery();
-            while (resultSet.next()){
-                int id = resultSet.getInt(1);
-                String firstName = resultSet.getString(2);
-                String lastName = resultSet.getString(3);
-                int age = resultSet.getInt(4);
-                System.out.println("id = " + id + "; firstName = " + firstName + "; lastName = "+ lastName + "; age = " + age);
+            while (resultSet.next()) {
+                User user1 = new User();
+                user1.setId(resultSet.getInt(1));
+                user1.setFirstName(resultSet.getString(2));
+                user1.setLastName(resultSet.getString(3));
+                user1.setAge(resultSet.getInt(4));
+                listUsers.add(user1);
             }
-        } catch (SQLException t){
-            throw new RuntimeException(t);
+            logger.info("----Список пользователей передан----");
+            return listUsers;
+        } catch (SQLException t) {
+            logger.info("----Error!----");
+            t.getStackTrace();
+            return null;
         }
-}
+    }
 }

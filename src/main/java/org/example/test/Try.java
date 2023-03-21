@@ -9,7 +9,7 @@ import org.example.work.MethodsUsersTable;
 public class Try {
     public static void main(String[] args) {
     MethodsUserAddressTable methodsUserAddressTable = new MethodsUserAddressTable();
-    methodsUserAddressTable.selectUserHouse(26);
+    methodsUserAddressTable.createTableUsersAddress();
 
     }
 }
