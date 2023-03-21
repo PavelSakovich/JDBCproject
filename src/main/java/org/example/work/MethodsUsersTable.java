@@ -39,8 +39,8 @@ public class MethodsUsersTable {
 
             PreparedStatement preparedStatement = connection.prepareStatement(" INSERT INTO users ( first_name, last_name, age ) " +
                                                                             "VALUES (?, ?, ?)")){
-            preparedStatement.setString(1, user.getFirst_name());
-            preparedStatement.setString(2, user.getLast_name());
+            preparedStatement.setString(1, user.getFirstName());
+            preparedStatement.setString(2, user.getLastName());
             preparedStatement.setInt(3, user.getAge());
             preparedStatement.executeUpdate();
             logger.info("------пользователь создан:" + user.toString());
@@ -99,19 +99,19 @@ public class MethodsUsersTable {
             logger.info("------- пользователя под id = " + id + " не найден-------");
         }
     }
-    public void updateUsers (int id, String first_name, String last_name, int age) {
+    public void updateUsers (int id, String firstName, String lastName, int age) {
         try ( Connection connection = ConnectionManager.open();
               PreparedStatement preparedStatement = connection.prepareStatement("UPDATE users SET first_name = ?, last_name = ?, age = ? WHERE id = ?"))
         {
             new MethodsUsersTable().outputUserToId(id);
-            preparedStatement.setString(1, first_name);
-            preparedStatement.setString(2, last_name);
+            preparedStatement.setString(1, firstName);
+            preparedStatement.setString(2, lastName);
             preparedStatement.setInt(3, age);
             preparedStatement.setInt(4, id);
             preparedStatement.executeUpdate();
             logger.info("Таблица обновлена:" + "\n" + "id = " + id + "\n"
-                    + "first_name = " + first_name + "\n"
-                    + "last_name = " + last_name + "\n"
+                    + "firstName = " + firstName + "\n"
+                    + "lastName = " + lastName + "\n"
                     + "age = " + age);
         } catch (SQLException e){
             e.getStackTrace();

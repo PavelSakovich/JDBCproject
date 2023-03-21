@@ -62,10 +62,10 @@ public class MethodsUserAddressTable {
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()){
                 int id = resultSet.getInt(1);
-                String first_name = resultSet.getString(2);
-                String last_name = resultSet.getString(3);
+                String firstName = resultSet.getString(2);
+                String lastName = resultSet.getString(3);
                 int age = resultSet.getInt(4);
-                System.out.println("id = " + id + "; first_name = " + first_name + "; last_name = "+ last_name + "; age = " + age);
+                System.out.println("id = " + id + "; firstName = " + firstName + "; lastName = "+ lastName + "; age = " + age);
             }
         } catch (SQLException t){
             throw new RuntimeException(t);
