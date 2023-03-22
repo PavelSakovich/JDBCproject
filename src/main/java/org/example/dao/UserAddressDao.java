@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import lombok.extern.java.Log;
+
 @Log
 public class UserAddressDao {
     public void createTableUsersAddress() {
@@ -32,7 +33,7 @@ public class UserAddressDao {
     public void addAddressToUser(UsersAddress userAddress) {
         try (Connection connection = ConnectionManager.open();
 
-            PreparedStatement preparedStatement = connection.prepareStatement(" INSERT INTO user_address (id, city, street, house) " + "VALUES (?, ?, ?, ?)");) {
+             PreparedStatement preparedStatement = connection.prepareStatement(" INSERT INTO user_address (id, city, street, house) " + "VALUES (?, ?, ?, ?)");) {
             preparedStatement.setInt(1, userAddress.getId());
             preparedStatement.setString(2, userAddress.getCity());
             preparedStatement.setString(3, userAddress.getStreet());
