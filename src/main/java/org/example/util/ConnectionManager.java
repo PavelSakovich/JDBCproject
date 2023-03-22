@@ -23,7 +23,6 @@ public class ConnectionManager {
             return connection;
         } catch (SQLException e) {
             log.info("---------Соединение не установлено------------");
-            e.getStackTrace();
             return null;
         }
     }

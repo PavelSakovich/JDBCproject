@@ -1,5 +1,6 @@
 package org.example.dao;
 
+import lombok.experimental.Accessors;
 import lombok.extern.java.Log;
 import org.example.util.ConnectionManager;
 import org.example.model.User;
@@ -11,8 +12,7 @@ import java.util.logging.Logger;
 import java.sql.Connection;
 
 @Log
-public class UserDao {
-
+public final class UserDao {
     public void createTable() {
 
         try (Connection connection = ConnectionManager.open();
@@ -21,7 +21,6 @@ public class UserDao {
             log.info("---- Таблица создана----");
         } catch (SQLException e) {
             log.info("---- Error!----");
-            e.getStackTrace();
         }
     }
 
@@ -32,7 +31,6 @@ public class UserDao {
             log.info("---- Таблица удалена----");
         } catch (SQLException e) {
             log.info("---- Error!----");
-            e.getStackTrace();
         }
     }
 
@@ -48,7 +46,6 @@ public class UserDao {
             log.info("----Пользователь создан----");
         } catch (SQLException e) {
             log.info("----Error!----");
-            e.getStackTrace();
         }
     }
 
@@ -60,7 +57,6 @@ public class UserDao {
             log.info("----Пользователь удален----");
         } catch (SQLException e) {
             log.info("----Error!----");
-            e.getStackTrace();
         }
     }
 
@@ -70,18 +66,17 @@ public class UserDao {
              Statement statement = connection.createStatement()) {
             ResultSet resultSet = statement.executeQuery("SELECT * FROM users");
             while (resultSet.next()) {
-                User user = new User();
-                user.setId(resultSet.getInt(1));
-                user.setFirstName(resultSet.getString(2));
-                user.setLastName(resultSet.getString(3));
-                user.setAge(resultSet.getInt(4));
+                User user = new User()
+                .setId(resultSet.getInt(1))
+                .setFirstName(resultSet.getString(2))
+                .setLastName(resultSet.getString(3))
+                .setAge(resultSet.getInt(4));
                 listUsers.add(user);
             }
             log.info("----Список всех пользователей передан---- ");
         } catch (SQLException e) {
             log.info("----Error!----");
-            e.getStackTrace();
-            return new ArrayList<>();
+            return listUsers;
         }
         return listUsers;
     }
@@ -93,18 +88,17 @@ public class UserDao {
             ResultSet resultSet = preparedStatement.executeQuery(" SELECT * FROM users");
             while (resultSet.next()) {
                 if (resultSet.getRow() == id) {
-                    user.setId(resultSet.getInt(1));
-                    user.setFirstName(resultSet.getString(2));
-                    user.setLastName(resultSet.getString(3));
-                    user.setAge(resultSet.getInt(4));
+                   user.setId(resultSet.getInt(1))
+                    .setFirstName(resultSet.getString(2))
+                    .setLastName(resultSet.getString(3))
+                    .setAge(resultSet.getInt(4));
                 }
             }
             log.info("----Пользователь получен----");
             return user;
         } catch (SQLException e) {
             log.info("----Error!----");
-            e.getStackTrace();
-            return new User();
+            return user;
         }
     }
 
@@ -122,7 +116,6 @@ public class UserDao {
                     + "age = " + age);
         } catch (SQLException e) {
             log.info("----Error!----");
-            e.getStackTrace();
         }
     }
 }
