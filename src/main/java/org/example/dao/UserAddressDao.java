@@ -1,17 +1,16 @@
-package org.example.work;
+package org.example.dao;
 
-import org.example.model.User;
-import org.example.model.UsersAddress;
+import org.example.models.User;
+import org.example.models.UsersAddress;
 import org.example.util.ConnectionManager;
-import org.example.work.MethodsUsersTable;
 
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.logging.Logger;
+import java.util.List;
 
-public class MethodsUserAddressTable {
-    private static Logger logger = Logger.getLogger("MethodsUserAddressTable");
-
+import lombok.extern.java.Log;
+@Log
+public class UserAddressDao {
     public void createTableUsersAddress() {
         String sql = """
                 CREATE TABLE user_address (
@@ -20,12 +19,11 @@ public class MethodsUserAddressTable {
                  street VARCHAR (20),
                  house INT);
                  """;
-        try (Connection connection = ConnectionManager.open();
-             PreparedStatement statement = connection.prepareStatement(sql)) {
+        try (Connection connection = ConnectionManager.open(); PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.executeUpdate();
-            logger.info("---- Таблица users_address создана-----");
+            log.info("---- Таблица users_address создана-----");
         } catch (SQLException e) {
-            logger.info("----Error----");
+            log.info("----Error----");
             e.getStackTrace();
         }
     }
@@ -34,21 +32,22 @@ public class MethodsUserAddressTable {
     public void addAddressToUser(UsersAddress userAddress) {
         try (Connection connection = ConnectionManager.open();
 
-             PreparedStatement preparedStatement = connection.prepareStatement(" INSERT INTO user_address (id, city, street, house) " + "VALUES (?, ?, ?, ?)");) {
+            PreparedStatement preparedStatement = connection.prepareStatement(" INSERT INTO user_address (id, city, street, house) " + "VALUES (?, ?, ?, ?)");) {
             preparedStatement.setInt(1, userAddress.getId());
             preparedStatement.setString(2, userAddress.getCity());
             preparedStatement.setString(3, userAddress.getStreet());
             preparedStatement.setInt(4, userAddress.getHouse());
             preparedStatement.executeUpdate();
-            logger.info("----Адрес добавлен----");
+            log.info("----Адрес добавлен----");
         } catch (SQLException e) {
-            logger.info("----Error!----");
+            log.info("----Error!----");
             e.getStackTrace();
         }
     }
 
-    public ArrayList<User> getUsersByNumberHouse(int numberHouse) {
-        ArrayList<User> listUsers = new ArrayList<>();
+
+    public List<User> getUsersByNumberHouse(int numberHouse) {
+        List<User> listUsers = new ArrayList<>();
         try (Connection connection = ConnectionManager.open();
              PreparedStatement preparedStatement = connection.prepareStatement("SELECT users.id, users.first_name, users.last_name, users.age FROM user_address LEFT JOIN  users  ON user_address.id = users.id WHERE user_address.house = ?")
         ) {
@@ -62,12 +61,12 @@ public class MethodsUserAddressTable {
                 user1.setAge(resultSet.getInt(4));
                 listUsers.add(user1);
             }
-            logger.info("----Список пользователей передан----");
+            log.info("----Список пользователей передан----");
             return listUsers;
         } catch (SQLException t) {
-            logger.info("----Error!----");
+            log.info("----Error!----");
             t.getStackTrace();
-            return null;
+            return new ArrayList<>();
         }
     }
 }

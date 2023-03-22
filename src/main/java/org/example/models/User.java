@@ -1,7 +1,7 @@
-package org.example.model;
+package org.example.models;
 
-import jdk.jfr.DataAmount;
 import lombok.Data;
+import lombok.experimental.Accessors;
 
 @Data
 public class User {
