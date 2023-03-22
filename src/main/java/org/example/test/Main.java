@@ -1,15 +1,16 @@
 package org.example.test;
 
 import org.example.model.User;
-import org.example.work.MethodsTable;
+import org.example.dao.UserDao;
 
 import java.util.ArrayList;
+import java.util.List;
 
 
-public class Try {
+public class Main {
     public static void main(String[] args) {
-        MethodsTable methodsTable = new MethodsTable();
-        ArrayList<User> user = methodsTable.getUsers();
+        UserDao methodsTable = new UserDao();
+        List<User> user = methodsTable.getUsers();
         user.forEach(System.out::println);
     }
 }
